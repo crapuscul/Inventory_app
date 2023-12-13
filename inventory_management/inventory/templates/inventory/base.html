@@ -1,0 +1,27 @@
+
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django App{% endblock %}</title>
+    <!-- Add your additional head content here, like stylesheets or scripts -->
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'inventory:index' %}">Home</a></li>
+            <!-- Add additional navigation links here if needed -->
+        </ul>
+    </nav>
+
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Add your additional footer content here -->
+
+    <!-- Add your additional scripts here if needed -->
+</body>
+</html>

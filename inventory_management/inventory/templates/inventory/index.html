@@ -1,0 +1,11 @@
+<!-- inventory/templates/inventory/index.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+  <h2>Inventory Management Dashboard</h2>
+  <p>Welcome to the Inventory Management System. Choose an option:</p>
+  <ul>
+    <li><a href="{% url 'inventory:product_list' %}">View Product List</a></li>
+    <li><a href="{% url 'inventory:add_product' %}">Add a New Product</a></li>
+  </ul>
+{% endblock %}

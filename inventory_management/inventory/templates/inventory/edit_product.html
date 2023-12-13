@@ -1,0 +1,12 @@
+<!-- inventory/templates/inventory/edit_product.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+  <h2>Edit Product</h2>
+  <form method="post" action="{% url 'inventory:edit_product' pk=product.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+  </form>
+  <a href="{% url 'inventory:product_list' %}">Back to Product List</a>
+{% endblock %}
