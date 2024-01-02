@@ -1,0 +1,15 @@
+<!-- inventory/templates/inventory/add_family.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Add Family</h2>
+  <form method="post" action="{% url 'inventory:add_family' %}">
+    {% csrf_token %}
+    {{ family_form.as_p }}
+    <button type="submit">Add Family</button>
+  </form>
+  <a href="{% url 'inventory:family_list' %}">Back to Family List</a>
+ </div>
+{% endblock %}
+

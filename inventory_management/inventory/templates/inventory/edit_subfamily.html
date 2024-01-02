@@ -1,0 +1,12 @@
+<!-- inventory/templates/inventory/edit_subfamily.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+  <h2>Edit Subfamily</h2>
+  <form method="post" action="{% url 'inventory:edit_subfamily' pk=subfamily_instance.pk %}">
+    {% csrf_token %}
+    {{ subfamily_form.as_p }}
+    <button type="submit">Save Changes</button>
+  </form>
+  <a href="{% url 'inventory:subfamily_list' %}">Back to Subfamily List</a>
+{% endblock %}

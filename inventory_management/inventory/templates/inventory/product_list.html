@@ -5,8 +5,8 @@
   <h2>Product List</h2>
   <ul>
     {% for product in products %}
-      <li>{{ product.name }} - <a href="{% url 'inventory:edit_product' pk=product.pk %}">Edit</a> -
-                               <a href="{% url 'inventory:delete_product' pk=product.pk %}">Delete</a></li>     
+      <li>{{ product.product_name }} - <a href="{% url 'inventory:edit_product' pk=product.pk %}">Edit</a> -
+                               <a href="{% url 'inventory:delete_product' pk=product.pk %}">Delete</a></li>
     {% endfor %}
   </ul>
   <a href="{% url 'inventory:add_product' %}">Add Product</a>

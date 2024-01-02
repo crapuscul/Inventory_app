@@ -1,0 +1,16 @@
+<!-- inventory/templates/inventory/subfamily_list.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+  <h2>subfamily List</h2>
+  <ul>
+    {% for subfamily in subfamilies %}
+      <li>{{ subfamily.subfamily_name }}
+      <a href="{% url 'inventory:edit_subfamily' pk=subfamily.pk|safe %}">Edit</a>
+      <a href="{% url 'inventory:delete_subfamily' pk=subfamily.pk|safe %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'inventory:add_subfamily' %}">Add SubFamily</a>
+  <a href="{% url 'inventory:add_family' %}">Add Family</a>
+{% endblock %}

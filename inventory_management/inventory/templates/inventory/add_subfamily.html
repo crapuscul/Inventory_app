@@ -1,0 +1,14 @@
+
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Add SubFamily</h2>
+  <form method="post" action="{% url 'inventory:add_subfamily' %}">
+    {% csrf_token %}
+    {{ subfamily_form.as_p }}
+    <button type="submit">Add SubFamily</button>
+  </form>
+  <a href="{% url 'inventory:subfamily_list' %}">Back to SubFamily List</a>
+ </div>
+{% endblock %}
