@@ -4,7 +4,7 @@
 
 ## Description
 
-This is my first project.
+This is my first project, it is not 100% complete as I am adding more functionalities and rearranging the code accordingly.
 
 The Inventory Management App is a Django-based web application designed to help businesses keep track of their inventory, manage product details, and streamline the overall inventory management process.
 
