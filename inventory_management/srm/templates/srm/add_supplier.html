@@ -1,0 +1,38 @@
+<!-- srm/templates/srm/add_supplier.html -->
+{% extends 'srm/base.html' %}
+
+{% block content %}
+<div class="form-group">
+  <h2>Add Supplier</h2>
+  <form method="post" action="{% url 'srm:add_supplier' %}" class="container">
+    {% csrf_token %}
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ supplier_form.supplier_name.id_for_label }}">Supplier Name:</label>
+        {{ supplier_form.supplier_name }}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="{{ supplier_form.supplier_contact_name.id_for_label }}">Contact Name:</label>
+        {{ supplier_form.supplier_contact_name }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ supplier_form.supplier_city.id_for_label }}">City:</label>
+        {{ supplier_form.supplier_city }}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="{{ supplier_form.supplier_phone.id_for_label }}">Number:</label>
+        {{ supplier_form.supplier_phone }}
+      </div>
+    </div>
+
+    <!-- ... (other form fields) ... -->
+
+    <button type="submit" class="btn btn-primary">Add Supplier</button>
+    <a href="{% url 'srm:supplier_list' %}" class="btn btn-secondary">Back to Supplier List</a>
+  </form>
+</div>
+{% endblock %}

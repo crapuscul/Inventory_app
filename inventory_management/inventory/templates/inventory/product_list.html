@@ -1,13 +1,51 @@
 <!-- inventory/templates/inventory/product_list.html -->
+
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-  <h2>Product List</h2>
-  <ul>
-    {% for product in products %}
-      <li>{{ product.product_name }} - <a href="{% url 'inventory:edit_product' pk=product.pk %}">Edit</a> -
-                               <a href="{% url 'inventory:delete_product' pk=product.pk %}">Delete</a></li>
-    {% endfor %}
-  </ul>
+  <table class="table table-striped table-dark">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Size</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Generate Label</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <th scope="row">{{ product.product_id }}</th>
+          <td>{{ product.product_name }}</td>
+          <td>{{ product.product_size }}</td>
+          <td><a href="{% url 'inventory:edit_product' pk=product.pk %}">Edit</a></td>
+          <td><a href="{% url 'inventory:delete_product' pk=product.pk %}">Delete</a></td>
+          <td><a href="#" onclick="openLabelPreview('{{ product.product_name }}', '{{ product.product_price_sell }}', '{{ product.product_reference }}', '{{ product.pk }}');">Generate Label</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   <a href="{% url 'inventory:add_product' %}">Add Product</a>
+
+  <script>
+    function openLabelPreview(productName, productPriceSell, productReference, productId) {
+      // Open a new window with the label preview
+      var labelPreviewWindow = window.open(
+        "/generate_label/" + productId + "/?preview=1&product_name=" +
+        encodeURIComponent(productName) +
+        "&product_price_sell=" +
+        encodeURIComponent(productPriceSell) +
+        "&product_reference=" +
+        encodeURIComponent(productReference),
+        "LabelPreview",
+        "width=600,height=400"
+      );
+      // Add an event listener for when the window is closed
+      labelPreviewWindow.onunload = function() {
+        // Do any cleanup or additional actions if needed
+      };
+    }
+  </script>
 {% endblock %}

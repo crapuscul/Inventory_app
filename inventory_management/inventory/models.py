@@ -1,5 +1,14 @@
 # Django inventory app models
+
 from django.db import models
+
+from .utils import generate_sku
+import os
+from barcode.writer import ImageWriter
+from django.conf import settings
+from barcode import generate
+
+from barcode.errors import BarcodeError
 
 class family(models.Model):
     family_id = models.AutoField(primary_key=True)
@@ -14,17 +23,8 @@ class subfamily(models.Model):
     family = models.ForeignKey(family, on_delete=models.CASCADE)
     def __str__(self):
         return self.subfamily_name
-
-class supplier(models.Model):
-    supplier_id = models.IntegerField(primary_key=True)
-    supplier_company_name = models.CharField(max_length=255)
-    supplier_contact_name = models.CharField(max_length=255)
-    supplier_address = models.CharField(max_length=255)
-    supplier_region = models.CharField(max_length=255)
-    supplier_postal_code = models.CharField(max_length=10)
-    supplier_city = models.CharField(max_length=255)
-    supplier_phone = models.CharField(max_length=20)
-    supplier_email = models.CharField(max_length=255)
+    
+from srm.models import supplier
 
 class product(models.Model):
     product_id = models.IntegerField(primary_key=True)
@@ -34,11 +34,43 @@ class product(models.Model):
     product_description = models.TextField()
     supplier_id = models.ForeignKey(supplier, on_delete=models.CASCADE, null=True)
     product_reference = models.CharField(max_length = 10)
-    product_price_buy = models.FloatField()
-    product_price_sell = models.FloatField()
-    product_quantity = models.IntegerField()
-    subfamily = models.ForeignKey(subfamily, on_delete=models.CASCADE,)
+    product_price_buy = models.FloatField(null=True)
+    product_price_sell = models.FloatField(null=True)
+    product_quantity = models.IntegerField(null=True)
+    subfamily = models.ForeignKey(subfamily, on_delete=models.CASCADE, null=True)
+    barcode = models.ImageField(upload_to='images/', null=True, blank=True)
+    sku = models.CharField(max_length=20, blank=True, null=True)
 
+
+
+
+    def save(self, *args, **kwargs):
+        if not self.sku:
+            # Generate SKU
+            self.sku, _ = generate_sku(self.product_name, self.product_id, self.product_reference)
+
+        # Set the barcode field
+        barcode_filename = f"barcode_{self.sku}.png"
+        barcode_path = os.path.join(settings.MEDIA_ROOT, 'images', barcode_filename)
+        self.barcode.name = barcode_path
+
+        if not self.barcode:
+            # Generate Barcode
+            barcode_string = generate('Code128', self.sku, writer=ImageWriter(), output=barcode_path)
+
+            with open(barcode_path, 'wb') as barcode_file:
+                barcode_file.write(barcode_string)
+
+            # Update the barcode field after saving the product
+            self.barcode.name = barcode_path
+
+        super().save(*args, **kwargs)  # Call the original save method
+
+    def __str__(self):
+        return f"{self.product_name} - SKU: {self.sku}"
+
+
+    
 class payment_type(models.Model):
     cash = 'cash'
     credit_card = 'credit_card'
@@ -59,28 +91,7 @@ class payment_type(models.Model):
         return self.get_name_display()
 
 
-class supplier_invoice(models.Model):
-    supplier_invoice_id = models.IntegerField(primary_key=True)
-    supplier_invoice_number = models.CharField(max_length=200)
-    supplier_invoice_date = models.DateField()
-    supplier_id = models.ForeignKey(supplier, on_delete=models.CASCADE)
-    supplier_invoice_amount_due = models.FloatField()
-    supplier_invoice_image_data = models.BinaryField()
 
-class supplier_invoice_item(models.Model):
-    supplier_invoice_item_id = models.IntegerField(primary_key=True)
-    supplier_invoice_id = models.ForeignKey(supplier_invoice, on_delete=models.CASCADE)
-    product_id = models.ForeignKey(product, on_delete=models.CASCADE)
-    supplier_invoice_item_quantity = models.IntegerField()
-    supplier_invoice_item_price = models.FloatField()
-    supplier_invoice_item_discount = models.FloatField()
-
-class supplier_invoice_payment(models.Model):
-    supplier_invoice_payment_id = models.IntegerField(primary_key=True)
-    supplier_invoice_id = models.ForeignKey(supplier_invoice, on_delete=models.CASCADE)
-    supplier_invoice_payment_date = models.DateField()
-    supplier_invoice_payment_amount = models.FloatField()
-    payment_type = models.ForeignKey(payment_type, on_delete=models.SET_NULL, null=True, blank=True)
 
 class customer(models.Model):
     customer_id = models.IntegerField(primary_key=True)
@@ -109,3 +120,7 @@ class customer_invoice_payment(models.Model):
     customer_invoice_payment_date = models.DateField()
     customer_invoice_payment_amount = models.FloatField()
     payment_type = models.ForeignKey(payment_type, on_delete=models.SET_NULL, null=True, blank=True)
+    
+class Transaction(models.Model):
+    products = models.ManyToManyField(product)
+    timestamp = models.DateTimeField(auto_now_add=True)

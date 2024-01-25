@@ -1,0 +1,25 @@
+<!-- templates/inventory/generate_label_preview.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+  <h2>Label Preview</h2>
+  <p>Product Name: {{ product.product_name }}</p>
+  <p>Price: {{ product.product_price_sell }}</p>
+  <p>Reference: {{ product.product_reference }}</p>
+  <img src="data:image/png;base64,{{ label_image_base64 }}" alt="Label Preview" style="max-width: 50%; height: auto;">
+  <p>SKU: {{ sku }}</p>
+  <button onclick="printLabel()">Print Label</button>
+  
+  <script>
+    function printLabel() {
+      // Open a new window with the print-friendly version
+      var printWindow = window.open("{% url 'inventory:generate_label' pk=product.pk %}?print=1");
+
+      // Add an event listener for when the window finishes loading
+      printWindow.onload = function() {
+        // Trigger the print dialog
+        printWindow.print();
+      };
+    }
+  </script>
+{% endblock %}

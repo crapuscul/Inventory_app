@@ -3,6 +3,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = 'inventory'
 urlpatterns = [
     path('', views.index, name='index'),
@@ -18,5 +19,8 @@ urlpatterns = [
     path('add_product/', views.add_product, name='add_product'),
     path('products/<int:pk>/edit/', views.edit_product, name='edit_product'),
     path('products/<int:pk>/delete/', views.delete_product, name='delete_product'),
+    path('generate_label/<int:pk>/', views.generate_label, name='generate_label'),
+    path('products/<int:pk>/print_label/', views.print_label, name='print_label'),
+
 ]
 

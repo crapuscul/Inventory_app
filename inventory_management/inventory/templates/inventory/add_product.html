@@ -2,13 +2,68 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="form-group">
   <h2>Add Product</h2>
-  <form method="post" action="{% url 'inventory:add_product' %}">
+  <form method="post" action="{% url 'inventory:add_product' %}" class="container">
     {% csrf_token %}
-    {{ product_form.as_p }}
-    <button type="submit">Add Product</button>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.family.id_for_label }}">Category:</label>
+        {{ product_form.family }}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.subfamily.id_for_label }}">Sub-category:</label>
+        {{ product_form.subfamily }}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.supplier.id_for_label }}">Supplier:</label>
+        {{ product_form.supplier }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.product_name.id_for_label }}">Name:</label>
+        {{ product_form.product_name }}
+      </div>
+      <!-- <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.product_size.id_for_label }}">Size:</label>
+        {{ product_form.product_size }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.color.id_for_label }}">Color:</label>
+        {{ product_form.color }}
+      </div> -->
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.product_price_sell.id_for_label }}">Price Sell:</label>
+        {{ product_form.product_price_sell }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.product_price_buy.id_for_label }}">Price Buy:</label>
+        {{ product_form.product_price_buy }}
+      </div>
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.product_reference.id_for_label }}">Ref:</label>
+        {{ product_form.product_reference }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="{{ product_form.prefix }}-{{ product_form.product_quantity.id_for_label }}">Quantity:</label>
+        {{ product_form.product_quantity }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Product</button>
+    <a href="{% url 'inventory:product_list' %}" class="btn btn-secondary">Back to Product List</a>
   </form>
-  <a href="{% url 'inventory:product_list' %}">Back to Product List</a>
- </div>
+</div>
 {% endblock %}
