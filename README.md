@@ -16,6 +16,12 @@ The Inventory Management App is a Django-based web application designed to help 
 
 - **Family and Subfamily Management:**
   - Create and manage families and subfamilies to organize products efficiently.
+    
+- **Supplier Relationship Management (SRM):**
+  - Maintain a database of suppliers with contact information and relationship details.
+  - Associate products with specific suppliers for easy procurement tracking.
+
+- **User-Friendly Interface:**
 
 - **User-Friendly Interface:**
   - Intuitive web interface for easy navigation and interaction.
