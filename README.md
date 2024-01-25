@@ -22,8 +22,6 @@ The Inventory Management App is a Django-based web application designed to help 
   - Associate products with specific suppliers for easy procurement tracking.
 
 - **User-Friendly Interface:**
-
-- **User-Friendly Interface:**
   - Intuitive web interface for easy navigation and interaction.
 
 - **Barcode Integration:**
